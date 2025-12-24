@@ -1,0 +1,140 @@
+伪代码及函数名参考、头文件与源文件作用与编写代码
+
+data.h:
+定义最大设备数
+int device_count = 0; => 一开始0个设备
+存放结构体
+
+main.c:    
+scanf choice
+switch(choice)
+
+is_device_count_zero() //判断device_count是否为0,在functions.c中写
+
+//在主函数中使用不写void, 在functions.c中写
+case 1:
+void showInfoMenu(void) //设备信息管理子菜单函数
+{
+    scanf choice_case1
+    switch(choice_case1)
+
+    //以下函数写在functions.c中，下同
+    case 1:
+    //添加设备信息
+    void addNewDevice() //括号内引入结构体以及当前设备数
+    {
+        检查是否大于最大设备数;
+        (用device[device_count])
+        输入验证:
+        如果 device_count > MAX_DEVICES 就return;(不写返回值直接return即可)
+        输入设备编号;
+        输入设备名称;
+        输入设备类型;
+        输入品牌与型号;
+        输入购买日期[格式YYYY-MM-DD]; => 可以这样写(参考): 
+        scanf("%d-%d-%d", &device[device_count].year,...以此类推)
+        [日期验证] //optional
+        输入价格;   [输入验证] //optional
+        输入状态（正常、故障、停用、维修中、报废）;
+        提示输入成功;
+        ++device_count;
+    }
+
+    case 2:
+    //修改设备信息
+    void editDeviceInfo()
+    {
+        is_device_count_zero(); //括号内要引入device_count
+        输入要修改设备的编号;
+        [输入验证] //optional
+        遍历数组查找是否有编号，若无则return，
+        有就scanf choiceInEdit 
+        使用switch-case进行:
+        {
+            修改设备编号;
+            修改设备名称;
+            修改设备类型;
+            修改品牌与型号;
+            修改购买日期;
+            修改价格;
+            全部修改;
+            取消修改;
+        }
+        提示修改成功;
+
+    }
+
+    //删除设备信息
+    void deleteDeviceInfo()
+    {
+        is_device_count_zero(); //括号内要引入device_count
+        输入要删除的设备的编号;
+        遍历数组查找是否有编号，若无则return，
+        有就让其后一个元素前移将其覆盖，[添加确认删除过程] //optional
+        --device_count;
+    }
+
+    //查询设备信息
+    void searchDeviceInfo()
+    {
+        is_device_count_zero(); //括号内要引入device_count
+        输入要查询设备的编号;
+        遍历数组查找是否有编号，若无则return，
+        有就显示;
+    }
+
+    //显示所有设备信息
+    void displayAllDeviceInfo()
+    {
+        全部显示;
+    }
+}
+
+
+case 2:
+void showStatusMenu(void) //设备状态管理子菜单函数
+{
+    //更新设备状态
+    void updateStatus()
+
+    //添加维修记录
+    void addRepairRecord()
+
+    //查询维修记录
+    void searchRepairRecord()
+}
+
+void showBorrowMenu(void) //设备借用管理子菜单函数
+{
+    //借用设备登记
+    void borrowDevice()
+
+    //归还设备登记
+    void returnDevice()
+
+    //逾期提醒 =>在查询借用记录里调用
+    void overdueReminder()
+
+    //查询借用记录
+    void searchBorrowRecord()
+}
+
+void showOverallInfoMenu(void) //统计报表模块子菜单函数
+{
+    //设备分类统计
+    void deviceCateStats()
+
+    //设备状态统计
+    void deviceStatusStats()
+
+    //借用情况统计
+    void deviceBorrowStats()
+
+    //生成报表文件（以上三个统计集合输出文件）
+    void generateRecord()
+}
+
+case 0:
+退出
+default:
+错误
