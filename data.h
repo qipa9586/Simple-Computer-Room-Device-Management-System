@@ -5,7 +5,7 @@
 #define TRUE 1
 #define FALSE 0
 
-// æ—¥æœŸçš„ç»“æ„ä½“
+// ÈÕÆÚµÄ½á¹¹Ìå
 typedef struct
 {
     int year;
@@ -14,45 +14,40 @@ typedef struct
 }Date;
 
 
-// è®¾å¤‡ä¿¡æ¯ä¸çŠ¶æ€çš„ç»“æ„ä½“
+// Éè±¸ĞÅÏ¢Óë×´Ì¬µÄ½á¹¹Ìå
 typedef struct
 {
-    int id;                 // è®¾å¤‡ç¼–å·
-    char name[50];          // è®¾å¤‡åç§°
-    char type[30];          // è®¾å¤‡ç±»å‹ï¼ˆå°å¼æœºï¼Œç¬”è®°æœ¬ï¼ŒCPUï¼Œå†…å­˜ç­‰ï¼‰
-    char brand[30];         // å“ç‰Œ
-    char model[30];         // å‹å·
-    Date purchase_date;     // è´­ä¹°æ—¥æœŸ
-    double price;           // ä»·æ ¼
-    char status[20];        // çŠ¶æ€ï¼ˆæ­£å¸¸ã€æ•…éšœã€åœç”¨ã€ç»´ä¿®ä¸­ã€æŠ¥åºŸï¼‰
+    int id;                 // Éè±¸±àºÅ
+    char name[50];          // Éè±¸Ãû³Æ
+    char type[30];          // Éè±¸ÀàĞÍ£¨Ì¨Ê½»ú£¬±Ê¼Ç±¾£¬CPU£¬ÄÚ´æµÈ£©
+    char brand[30];         // Æ·ÅÆ
+    char model[30];         // ĞÍºÅ
+    Date purchase_date;     // ¹ºÂòÈÕÆÚ
+    double price;           // ¼Û¸ñ
+    char status[20];        // ×´Ì¬£¨Õı³£¡¢¹ÊÕÏ¡¢Í£ÓÃ¡¢Î¬ĞŞÖĞ¡¢±¨·Ï£©
 } Device;
 
-// è®¾å¤‡ç»´ä¿®çš„ç»“æ„ä½“
+// Éè±¸Î¬ĞŞµÄ½á¹¹Ìå
 typedef struct {
-    int repair_id;          // ç»´ä¿®è®°å½•ç¼–å·
-    int equipment_id;       // è®¾å¤‡ç¼–å·
-    char fault_desc[100];   // æ•…éšœæè¿°
-    Date repair_date;       // ç»´ä¿®æ—¥æœŸ
-    char repair_person[50]; // ç»´ä¿®äººå‘˜
-    double cost;            // ç»´ä¿®è´¹ç”¨
+    int repair_id;          // Î¬ĞŞ¼ÇÂ¼±àºÅ
+    int device_id;          // Éè±¸±àºÅ
+    char fault_desc[100];   // ¹ÊÕÏÃèÊö
+    Date repair_date;       // Î¬ĞŞÈÕÆÚ
+    char repair_person[50]; // Î¬ĞŞÈËÔ±
+    double cost;            // Î¬ĞŞ·ÑÓÃ
 } Repair;
 
-// è®¾å¤‡å€Ÿç”¨çš„ç»“æ„ä½“
+// Éè±¸½èÓÃµÄ½á¹¹Ìå
 typedef struct
 {
-    int record_id;                 // è®°å½•ç¼–å·
-    int equipment_id;              // è®¾å¤‡ç¼–å·
-    char borrow_date[20];          // å€Ÿç”¨æ—¥æœŸ
-    Date return_date;              // åº”å½’è¿˜æ—¥æœŸ
-    Date actual_return_date[20];   // å®é™…å½’è¿˜æ—¥æœŸ
-    char status[20];               // çŠ¶æ€ï¼ˆå€Ÿç”¨ä¸­ã€å·²å½’è¿˜ã€é€¾æœŸï¼‰
+    int record_id;                 // ½èÓÃ¼ÇÂ¼±àºÅ
+    int device_id;                 // Éè±¸±àºÅ
+    Date borrow_date;              // ½èÓÃÈÕÆÚ
+    Date return_date;              // Ó¦¹é»¹ÈÕÆÚ
+    Date actual_return_date;       // Êµ¼Ê¹é»¹ÈÕÆÚ
+    char status[20];               // ×´Ì¬£¨½èÓÃÖĞ¡¢ÒÑ¹é»¹¡¢ÓâÆÚ£©
 }Borrow;
 
-// å£°æ˜å…¨å±€å˜é‡ï¼ˆä½¿ç”¨externï¼‰
-extern int device_count;
-extern int repair_count;
-extern Device device[MAX_DEVICES];
-extern Repair repair[MAX_DEVICES];
-extern Borrow borrow[MAX_DEVICES];
+
 
 #endif
