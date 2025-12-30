@@ -1,15 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "data.h"
-#include "mainFunctions.h"
 #include "menu.h"
+#include "mainFunctions.h"
+
 
 int main(void)
 {
 
-    int *device_count = 0;
-    int *repair_count = 0;
-    int *borrow_count = 0;
+    int device_count = 0;
+    int repair_count = 0;
+    int borrow_count = 0;
 
     Device device[MAX_DEVICES];
     Repair repair[MAX_DEVICES];
@@ -26,6 +27,7 @@ int main(void)
         {
             case 1:
             {
+                system("cls");
                 showInfoMenu();
                 int choice_case1;
                 scanf("%d", &choice_case1);
@@ -33,26 +35,33 @@ int main(void)
                 switch(choice_case1) {
                     
                     case 1: {
-                        printf("尚未开发\n\n");
+                        system("cls");
+                        addNewDevice(device, &device_count);
                     }break;
 
                     case 2: {
-                        printf("尚未开发\n\n");
+                        system("cls");
+                        editDeviceInfo(device, &device_count);
                     }break;
 
                     case 3: {
-                        printf("尚未开发\n\n");
+                        system("cls");
+                        deleteDeviceInfo(device, &device_count);
                     }break;
 
                     case 4: {
-                        printf("尚未开发\n\n");
+                        system("cls");
+                        searchDeviceInfo(device, &device_count);
                     }break;
 
                     case 5: {
-                        printf("尚未开发\n\n");
+                        system("cls");
+                        displayAllDeviceInfo(device, &device_count);
                     }break;
 
-                    case 0: 
+                    case 0: {
+                        system("cls");
+                    } 
                     break;
 
                     default: {
@@ -64,6 +73,7 @@ int main(void)
 
             case 2:
             {
+                system("cls");
                 showStatusMenu();
                 int choice_case2;
                 scanf("%d", &choice_case2);
@@ -71,18 +81,22 @@ int main(void)
                 switch(choice_case2) {
 
                     case 1: {
+                        system("cls");
                         updateStatus(device, &device_count);
                     }break;
 
                     case 2: {
+                        system("cls");
                         addRepairRecord(device, &device_count, repair, &repair_count);
                     }break;
 
                     case 3: {
+                        system("cls");
                         searchRepairRecord(device, &device_count, repair, &repair_count);
                     }break;
 
-                    case 0: 
+                    case 0:
+                        system("cls"); 
                     break;
 
                     default: {
@@ -96,6 +110,7 @@ int main(void)
 
             case 3:
             {
+                system("cls");
                 showBorrowMenu();
                 int choice_case3;
                 scanf("%d", &choice_case3);
@@ -103,18 +118,22 @@ int main(void)
                 switch(choice_case3) {
 
                     case 1: {
-                        borrowDevice(device, borrow, &device_count, &borrow_count);
+                        system("cls");
+                        borrowDevice(device, &device_count, borrow, &borrow_count);
                     }break;
                 
                     case 2: {
-                        returnDevice(device, borrow, &device_count, &borrow_count);
+                        system("cls");
+                        returnDevice(device, &device_count, borrow, &borrow_count);
                     }break;
 
                     case 3: {
-                        searchBorrowRecord(device, borrow, &device_count, &borrow_count);
+                        system("cls");
+                        searchBorrowRecord(device, &device_count, borrow, &borrow_count);
                     }break;
 
                     case 0: 
+                        system("cls");
                     break;
 
                     default: {
@@ -127,6 +146,7 @@ int main(void)
 
             case 4:
             {
+                system("cls");
                 showOverallInfoMenu();
     
                 int choice_case4;
@@ -162,11 +182,13 @@ int main(void)
 
             case 0:
             {
+                system("cls");
                 printf("感谢使用本程序!\n\n");
             }break;
 
             default:
             {
+                system("cls");
                 printf("输入错误，请重试!\n\n");
             }break;
 

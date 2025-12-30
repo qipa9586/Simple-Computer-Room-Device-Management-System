@@ -1,40 +1,100 @@
 #include <stdio.h>
 #include "data.h"
 
-// æ¸…é™¤ç¼“å†²åŒº
+// Çå³ı»º³åÇø
 void cleanBuffer(void)
 {
     int c;
     do{
         c = getchar();
-    }while(c != '\n');
+    }while(c != '\n' && c != EOF);
 }
 
-// æ£€æŸ¥è®¾å¤‡æ•°é‡
+// ¼ì²éÉè±¸ÊıÁ¿
 int checkDeviceAvailable(int device_count)
 {
     if (device_count > MAX_DEVICES)
     {
-        printf("æœºæˆ¿è®¾å¤‡å·²æ»¡ï¼\n\n");
+        printf("»ú·¿Éè±¸ÒÑÂú!\n\n");
         return 0;
     }
 
     if (device_count == 0)
     {
-        printf("è¯·å…ˆè‡³å°‘æ·»åŠ ä¸€ä¸ªè®¾å¤‡ï¼\n\n");
+        printf("ÇëÏÈÖÁÉÙÌí¼ÓÒ»¸öÉè±¸!\n\n");
         return 0;
     }
 
     return 1;
 }
 
-// é—°å¹´æ£€æŸ¥
+int confirmEdit(void)
+{
+    int comfirm;
+    do
+    {
+        printf("©°©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©´\n");    
+	    printf("|  ÊÇ·ñÈ·ÈÏĞŞ¸Ä |\n");
+	    printf("©À©¤©¤©¤©¤©¤©¤©¤©Ğ©¤©¤©¤©¤©¤©¤©¤©È\n");
+	    printf("| 1- ÊÇ ©¦ 0- ·ñ |\n");
+	    printf("©¸©¤©¤©¤©¤©¤©¤©¤©Ø©¤©¤©¤©¤©¤©¤©¤©¼\n");
+        printf("ÇëÊäÈë: ");
+        scanf("%d",&comfirm);
+        cleanBuffer();
+
+        if(comfirm == 1)  ;
+        else if(comfirm == 0)
+        {
+            comfirm = 1;
+            return FALSE;
+        }
+        else 
+        {
+            printf("ÊäÈëÎŞĞ§£¬ÇëÖØĞÂÊäÈë!\n");
+            comfirm = 0;
+        }
+    } while (!comfirm);  
+    
+    return TRUE;
+}
+
+int confirmDelete(void)
+{
+    int comfirm;
+    do
+    {
+        printf("©°©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©´\n");    
+	    printf("|  ÊÇ·ñÈ·ÈÏÉ¾³ı |\n");
+	    printf("©À©¤©¤©¤©¤©¤©¤©¤©Ğ©¤©¤©¤©¤©¤©¤©¤©È\n");
+	    printf("| 1- ÊÇ ©¦ 0- ·ñ |\n");
+	    printf("©¸©¤©¤©¤©¤©¤©¤©¤©Ø©¤©¤©¤©¤©¤©¤©¤©¼\n");
+        printf("ÇëÊäÈë: ");
+        scanf("%d",&comfirm);
+        cleanBuffer();
+
+        if (comfirm == 1)  break;
+        else if (comfirm == 0)
+        {
+            comfirm = 1;
+            return FALSE;
+        }
+        else 
+        {
+            printf("ÊäÈëÎŞĞ§£¬ÇëÖØĞÂÊäÈë!\n");
+            comfirm = 0;
+        }
+    } while (! comfirm);   
+    
+    return TRUE;
+}
+
+// ÈòÄê¼ì²é
 int isLeapYear(int year)
 {
     return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
 }
 
-// äºŒæœˆæ£€æŸ¥,æš‚æ—¶æ— ç”¨
+// ¶şÔÂ¼ì²é,ÔİÊ±ÎŞÓÃ
 /* 
 int isFebruary(Date date)
 {
@@ -45,20 +105,20 @@ int isFebruary(Date date)
     
     if (date.day < 1) 
     {
-        printf("æ—¥æœŸä¸èƒ½å°äº1å¤©,è¯·é‡æ–°è¾“å…¥!\n\n");
+        printf("ÈÕÆÚ²»ÄÜĞ¡ÓÚ1Ìì,ÇëÖØĞÂÊäÈë!\n\n");
         return FALSE;
     }
     
     if (isLeapYear(date.year))
     {
         if (date.day > 29) {
-            printf("é—°å¹´2æœˆä¸èƒ½å¤§äº29å¤©,è¯·é‡æ–°è¾“å…¥!\n\n");
+            printf("ÈòÄê2ÔÂ²»ÄÜ´óÓÚ29Ìì,ÇëÖØĞÂÊäÈë!\n\n");
             return FALSE;
         }
     } 
     else {
         if (date.day > 28) {
-            printf("2æœˆå¤©æ•°ä¸èƒ½å¤§äº28å¤©,è¯·é‡æ–°è¾“å…¥!\n\n");
+            printf("2ÔÂÌìÊı²»ÄÜ´óÓÚ28Ìì,ÇëÖØĞÂÊäÈë!\n\n");
             return FALSE;
         }
     }
@@ -68,43 +128,43 @@ int isFebruary(Date date)
     
 */
 
-// æ—¥æœŸæ£€æŸ¥
+// ÈÕÆÚ¼ì²é
 int isDateValid(Date date)
 {
-    // å¹´ä»½æ£€æŸ¥
-    if (date.year < 2000 || date.year > 2100) 
+    // Äê·İ¼ì²é
+    if (date.year < 2000 || date.year > 2050) 
     {
-        printf("å¹´ä»½è¾“å…¥é”™è¯¯,è¯·é‡è¯•!\n\n");
+        printf("Äê·İÊäÈë´íÎó,ÇëÖØÊÔ!\n\n");
         return FALSE;
     }
 
-    // æœˆä»½æ£€æŸ¥
+    // ÔÂ·İ¼ì²é
     if (date.month < 1 || date.month > 12) 
     {
-        printf("æœˆä»½è¾“å…¥é”™è¯¯,è¯·é‡è¯•!\n\n");
+        printf("ÔÂ·İÊäÈë´íÎó,ÇëÖØÊÔ!\n\n");
         return FALSE;
     }
 
-    // æ—¥æœŸæœ€å°å€¼æ£€æŸ¥
+    // ÈÕÆÚ×îĞ¡Öµ¼ì²é
     if (date.day < 1) 
     {
-        printf("æ—¥æœŸä¸èƒ½å°äº1å¤©,è¯·é‡æ–°è¾“å…¥!\n\n");
+        printf("ÈÕÆÚ²»ÄÜĞ¡ÓÚ1Ìì,ÇëÖØĞÂÊäÈë!\n\n");
         return FALSE;
     }
 
-    // æ¯æœˆæœ€å¤§å¤©æ•°æ•°ç»„
+    // Ã¿ÔÂ×î´óÌìÊıÊı×é
     int days_in_month[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     
-    // é—°å¹´è°ƒæ•´2æœˆå¤©æ•°
+    // ÈòÄêµ÷Õû2ÔÂÌìÊı
     if (isLeapYear(date.year))
     {
         days_in_month[1] = 29;
     }
 
-    // æ£€æŸ¥æ—¥æœŸæ˜¯å¦è¶…è¿‡å½“æœˆæœ€å¤§å¤©æ•°
+    // ¼ì²éÈÕÆÚÊÇ·ñ³¬¹ıµ±ÔÂ×î´óÌìÊı
     if (date.day > days_in_month[date.month - 1]) 
     {
-        printf("å¤©æ•°è¾“å…¥é”™è¯¯,è¯·é‡è¯•!\n\n");
+        printf("ÌìÊıÊäÈë´íÎó,ÇëÖØÊÔ!\n\n");
         return FALSE;
     }
 
@@ -113,7 +173,7 @@ int isDateValid(Date date)
 
 int compareDate(Date return_date, Date actual_date)
 {
-    // -1: (date1 < date2), 0: (ç›¸ç­‰), 1: (date1 > date2)
+    // -1: (date1 < date2), 0: (ÏàµÈ), 1: (date1 > date2)
     if (return_date.year != actual_date.year)
     {
         return (return_date.year < actual_date.year) ? -1 : 1;
@@ -132,14 +192,14 @@ int compareDate(Date return_date, Date actual_date)
     return 0;
 }
 
-// é€¾æœŸæé†’
+// ÓâÆÚÌáĞÑ
 int overdueReminder(Date return_date, Date actual_date)
 {
     if (return_date.year == actual_date.year && return_date.month == actual_date.month)
     {
         if (return_date.day > actual_date.day)
         {
-            int reminder = return_date.day - actual_date.day;
+            int reminder = return_date.day - actual_date.day ;
             return reminder;
         }
     }
@@ -147,36 +207,55 @@ int overdueReminder(Date return_date, Date actual_date)
     return 0;
 }
 
-int isOverdue(Date return_date, Date actual_date)
+int dateToDays(Date date)
 {
-    int days_between = 0;
-    int days_in_month[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    
-    int days1 = return_date.year * 365 + return_date.month * days_in_month[return_date.month - 1] 
-                + days_in_month[return_date.month - 1];
-    int days2 = actual_date.year * 365 + actual_date.month * days_in_month[actual_date.month - 1]
-                + days_in_month[actual_date.month - 1];
-    
-    days_between = days2 - days1;
+    int days = 0;
 
-    return days_between;
+    // Äê·İÌìÊı
+    for (int y = 2000; y < date.year; y++)
+    {
+        days += isLeapYear(y) ? 366 : 355;
+    }
+
+    int days_in_month[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    if (isLeapYear(date.year))
+    {
+        days_in_month[1] = 29;
+    }
+    
+    // ÔÂ·İÌìÊı
+    for (int m = 1; m < date.month; m++)
+    {
+        days += days_in_month[m - 1];
+    }
+
+    // ÈÕÆÚ
+    days += date.day - 1; // ¼õÈ¥1£¬ÒòÎª1ÔÂ1ÈÕÊÇµÚ0Ìì
+
+    return days;
+}
+
+int calculateOverdueDays(Date return_date, Date actual_date)
+{
+    return dateToDays(return_date) - dateToDays(actual_date);
 }
 
 Date calcuReturnDate(Date borrow_date)
 {
     Date return_date = borrow_date;
 
-    // éé—°å¹´
+    // ·ÇÈòÄê
     int days_in_month[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 
-    // é—°å¹´2æœˆæœ‰29å¤©
+    // ÈòÄê2ÔÂÓĞ29Ìì
     if (isLeapYear(return_date.year))
     {
         days_in_month[1] = 29;
     }
 
-    // é™åˆ¶30å¤©
+    // ÏŞÖÆ30Ìì
     return_date.day += 30;
 
     while (return_date.day > days_in_month[return_date.month - 1])
@@ -211,5 +290,5 @@ char* getDeviceName(Device device[], int device_id, int device_count)
         }
     }
 
-    return "æœªçŸ¥è®¾å¤‡";
+    return "Î´ÖªÉè±¸";
 }

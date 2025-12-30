@@ -1,4 +1,6 @@
-#include <stdio.h>
+#ifndef MENU_H
+#define MENU_H
+
 //主菜单函数
 void showMainMenu(void) 
 {
@@ -13,7 +15,7 @@ void showMainMenu(void)
 //设备信息管理子菜单函数
 void showInfoMenu(void) 
 {
-    printf("\n====================\n");
+    printf("====================\n");
     printf("=== 设备信息管理 ===\n");
     printf("====================\n");
     printf("1. 添加设备信息\n2. 修改设备信息\n3. 删除设备信息\n4. 查询设备信息\n5. 显示所有设备\n0. 返回上级菜单\n");
@@ -25,7 +27,7 @@ void showInfoMenu(void)
 //设备状态管理子菜单函数
 void showStatusMenu(void) 
 {
-    printf("\n====================\n");
+    printf("====================\n");
     printf("=== 设备状态管理 ===\n");
     printf("====================\n");
     printf("1. 更新设备状态\n2. 添加维修记录\n3. 查询维修记录\n0. 返回上级菜单\n");
@@ -36,7 +38,7 @@ void showStatusMenu(void)
 //设备借用管理子菜单函数
 void showBorrowMenu(void) 
 {
-    printf("\n====================\n");
+    printf("====================\n");
     printf("=== 设备借用管理 ===\n");
     printf("====================\n");
     printf("1. 借用设备登记\n2. 归还设备登记\n3. 查询借用记录\n0. 返回上级菜单\n");
@@ -47,10 +49,22 @@ void showBorrowMenu(void)
 //统计报表模块函数
 void showOverallInfoMenu(void) 
 {
-    printf("\n====================\n");
+    printf("====================\n");
     printf("=== 统计报表管理 ===\n");
     printf("====================\n");
     printf("1. 设备分类统计\n2. 设备状态统计\n3. 借用情况统计\n4. 生成报表文件\n0. 返回上级菜单\n");
     printf("====================\n");
     printf("请选择操作(0-4): ");
 }
+
+void showEditMenu(void)
+{
+    printf("====================\n");
+    printf("=== 修改设备信息 ===\n");
+    printf("====================\n");
+    printf("1. 修改设备编号\n2. 修改设备名称\n3. 修改设备类型\n4. 修改品牌与型号\n5. 修改购买日期\n6. 修改价格\n7. 全部修改\n0. 取消修改\n");
+    printf("====================\n");
+    printf("请选择操作(0-7): ");
+}
+
+#endif
