@@ -7,6 +7,8 @@ void cleanBuffer(void);
 int checkDeviceAvailable(int device_count);
 int confirmEdit(void);
 int confirmDelete(void);
+int confirmReadInfo(void);
+int confirmBatchAdd(void);
 
 int isLeapYear(int year);
 /* int isFebruary(Date date); */

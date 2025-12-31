@@ -5,45 +5,72 @@
 #include "assistFunctions.h"
 
 void showEditMenu(void);
+void showGenerateReportMenu(void);
 
 // 设备信息管理模块
 void addNewDevice(Device device[], int *device_count)
 {
     int judgment = FALSE;
+    int valid_id = FALSE;
+    int batch_add_count;
+
+    do
+    {
+        batch_add_count = confirmBatchAdd();
+        if(batch_add_count == 0)
+        {
+            system("cls");
+            return;
+        }    
+        if(*device_count + batch_add_count > 100)
+        {
+            system("cls");
+            printf("批量添加设备数超过系统剩余可容纳数,请重新输入！\n\n");
+        }    
+    } while (*device_count + batch_add_count > 100);
 
     printf("请输入以下信息:\n");
-
-    printf("设备编号: ");
-    while (scanf("%d", &device[*device_count].id) != 1)
+    
+    // 输入验证
+    do
     {
-        printf("设备编号仅可为数字!\n");
-        printf("请重新输入设备编号: ");
-        cleanBuffer();
-    }
-    cleanBuffer();
+        valid_id = TRUE;
 
-    for (int i = 0; i < *device_count; i++)
-    {
-        if (device[i].id == device[*device_count].id)
+        printf("设备编号: ");
+        while (scanf("%d", &device[*device_count].id) != 1)
         {
-            printf("此设备编号: %d 已存在，请重新输入!\n\n", device[i].id);
-            i = 0;
+            printf("设备编号仅可为数字!\n");
             printf("请重新输入设备编号: ");
-            while (scanf("%d", &device[*device_count].id) != 1)
-            {
-                printf("设备编号仅可为数字!\n");
-                printf("请重新输入设备编号: ");
-                cleanBuffer();
-            }
             cleanBuffer();
         }
-    }
+        cleanBuffer();
 
+        if (device[*device_count].id < 0)
+        {
+            printf("设备编号必须为正整数!\n");
+            valid_id = FALSE;
+            continue;
+        }
     
+        for (int i = 0; i < *device_count; i++)
+        {
+            if (device[i].id == device[*device_count].id)
+            {
+                printf("此设备编号: %d 已存在，请重新输入!\n\n", device[i].id);
+                valid_id = FALSE;
+                break;
+            }
+        } 
+    } while (!valid_id);
+
 
     printf("设备名称: ");
 
+    // 运用fgets好处:字符串中可以有空格, 用scanf("%s")遇到空格就停止了
+    // 运用fgets的标准输入流存储字符串
     fgets(device[*device_count].name, sizeof(device[*device_count].name), stdin);
+    // 此处strcspn函数含义:在device[*device_count].(结构体成员)读取到"\n"就返回在这个对应的下标
+    // 用来清除字符数组中的换行符
     device[*device_count].name[strcspn(device[*device_count].name, "\n")] = '\0';
 
     printf("设备类型: ");
@@ -67,6 +94,7 @@ void addNewDevice(Device device[], int *device_count)
                       &device[*device_count].purchase_date.day);
     cleanBuffer();
 
+    // 日期验证
     while (!isDateValid(device[*device_count].purchase_date))
     {
         printf("请重新输入购买日期[YYYY-MM-DD]: ");
@@ -83,6 +111,7 @@ void addNewDevice(Device device[], int *device_count)
         scanf("%lf", &device[*device_count].price);
         cleanBuffer();
 
+        // 输入验证
         if (device[*device_count].price < 0) {
             printf("价格不能为负数, 请重试!\n\n");
             judgment = FALSE;
@@ -91,6 +120,7 @@ void addNewDevice(Device device[], int *device_count)
             judgment = TRUE;
     } while (!judgment);
 
+    // 输入验证
     while (device[*device_count].price >= 1e9)
     {
         printf("价格金额过大!\n");
@@ -103,6 +133,21 @@ void addNewDevice(Device device[], int *device_count)
     
     strcpy(device[*device_count].status, "正常");
     (*device_count)++;
+
+    for (int j = *device_count; j < (*device_count) + batch_add_count - 1; j++)
+    {
+        device[j].id = device[j - 1].id + 1;
+        strcpy(device[j].name,  device[(*device_count) - 1].name);
+        strcpy(device[j].type,  device[(*device_count) - 1].type);
+        strcpy(device[j].brand, device[(*device_count) - 1].brand);
+        strcpy(device[j].model, device[(*device_count) - 1].model);
+        device[j].purchase_date.year = device[(*device_count) - 1].purchase_date.year;
+        device[j].purchase_date.month = device[(*device_count) - 1].purchase_date.month;
+        device[j].purchase_date.day = device[(*device_count) - 1].purchase_date.day;
+        device[j].price = device[(*device_count) - 1].price;
+        strcpy(device[j].status, "正常");
+    }
+    *device_count = (*device_count) + batch_add_count - 1;
 }
 
 void editDeviceInfo(Device device[], int *device_count)
@@ -186,7 +231,6 @@ void editDeviceInfo(Device device[], int *device_count)
                     comfirm = FALSE;
                 }
             } while (!comfirm);
-            system("pause");
         }
         break;
 
@@ -229,7 +273,6 @@ void editDeviceInfo(Device device[], int *device_count)
                 }
 
             } while (!comfirm);
-            system("pause");
         }
         break;
 
@@ -270,7 +313,6 @@ void editDeviceInfo(Device device[], int *device_count)
                     comfirm = FALSE;
                 }
             } while (!comfirm);
-            system("pause");
         }
         break;
 
@@ -348,7 +390,6 @@ void editDeviceInfo(Device device[], int *device_count)
                     comfirm = FALSE;
                 }
             } while (!comfirm);
-            system("pause");
         }
         break;
 
@@ -399,7 +440,6 @@ void editDeviceInfo(Device device[], int *device_count)
                     comfirm = FALSE;
                 }
             } while (!comfirm);
-            system("pause");
         }
         break;
 
@@ -518,7 +558,6 @@ void editDeviceInfo(Device device[], int *device_count)
                 comfirm = TRUE;
 
             } while (!comfirm);
-            system("pause");
         }
         break;
 
@@ -531,6 +570,7 @@ void editDeviceInfo(Device device[], int *device_count)
         default:
         {
             printf("输入错误!请重试!\n\n");
+            system("pause");
         }
         break;
 
@@ -578,7 +618,10 @@ void deleteDeviceInfo(Device device[], int *device_count)
         printf("已取消删除!\n\n");
         return;
     }
+
+    printf("当前设备: %s\n\n", device[index].name);
     
+    // for循环让后面的把要删除的覆盖掉
     for (int i = index; i < *device_count - 1; i++)
     {
         //id 前移
@@ -662,6 +705,87 @@ void displayAllDeviceInfo(Device device[], int *device_count)
     }
     printf("——————————————————————————————————————————————————————————————————————————————————————\n\n");
 }
+
+void readDeviceInfo(Device device[], int *device_count)
+{
+    // 使用.csv格式文件能更好读取数据
+    FILE *file = fopen("device_report.csv", "r");
+
+    if (file == NULL)
+    {
+        printf("无法打开设备信息文件!\n\n");
+        printf("请确保已使用生成报表功能创建了设备信息文件!\n\n");
+        return;
+    }
+
+    char line[256];
+    int count = 0; // 读取的设备数
+
+    printf("正在读取设备信息...\n");
+    
+    // 跳过报表表头
+    fgets(line, sizeof(line), file);
+    
+    // while循环继续读取接下来的行中的数据
+    while (*device_count < MAX_DEVICES && fgets(line, sizeof(line), file) != NULL)
+    {
+        // 定义临时变量
+        Device temp; 
+        // 去除换行符
+        line[strcspn(line, "\n")] = '\0';
+        // 解析 CSV 格式
+        char *token;           // 分割出来的存在这里
+        int field = 0;         // 每一段
+        char *line_ptr = line; // 保存指针
+        // strtok_r函数: 线程安全的字符串分割函数, 这里用逗号分割CSV行
+        // while循环进行分割各个部分
+        while ((token = strtok_r(line_ptr, ",", &line_ptr)) != NULL && field < 8)
+        {
+            // 去除字段包含的引号
+            if (token[0] == '"' && token[strlen(token) - 1] == '"')
+            {
+                token[strlen(token)-1] = '\0'; // 最后一个双引号变为'\0'
+                token++;                       // 跳过开头的双引号
+            }
+            // atoi函数强制转换为整形, atof函数强制转换为浮点型
+            // 并存入临时变量中
+            switch(field)
+            {
+                case 0: temp.id = atoi(token); break;
+                case 1: strcpy(temp.name, token); break;
+                case 2: strcpy(temp.type, token); break;
+                case 3: strcpy(temp.brand, token); break;
+                case 4: strcpy(temp.model, token); break;
+                case 5: temp.price = atof(token); break;
+                case 6: strcpy(temp.status, token); break;
+                case 7: 
+                    sscanf(token, "%d-%d-%d", 
+                           &temp.purchase_date.year,
+                           &temp.purchase_date.month,
+                           &temp.purchase_date.day);
+                    break;
+            }
+            field++;
+
+        }
+        
+        if (field == 8)
+        {
+            device[*device_count] = temp;
+            (*device_count)++;
+            count++;
+            printf("成功读取设备: 编号 : %d, 名称 : %s\n", temp.id, temp.name);
+        }
+    }
+    
+    fclose(file);
+    if (count == 0) {
+        printf("没有找到设备信息。\n");
+    } else {
+        printf("-------------------------------------------------------------------------------------------\n");
+        printf("总共找到 %d 个设备。\n", count);
+    }
+}
 // 结束
 
 // 设备状态管理模块
@@ -696,7 +820,7 @@ void updateStatus(Device device[], int *device_count)
 
     printf("该设备为: %s\n", device[index].name);
     printf("当前状态: %s\n\n", device[index].status);
-    printf("请输入要更新的状态\n(1-正常 2-故障 3-停用 4-维修中 5-报废): ");
+    printf("请输入要更新的状态\n(1-正常 2-故障 3-停用 4-已维修 5-维修中 6-报废): ");
     scanf("%d", &choice);
     cleanBuffer();
 
@@ -707,8 +831,10 @@ void updateStatus(Device device[], int *device_count)
     else if (choice == 3)
         strcpy(device[index].status, "停用");
     else if (choice == 4)
-        strcpy(device[index].status, "维修中");
+        strcpy(device[index].status, "已维修");
     else if (choice == 5)
+        strcpy(device[index].status, "维修中");
+    else if (choice == 6)
         strcpy(device[index].status, "报废");
     else
     {
@@ -761,6 +887,22 @@ void addRepairRecord(Device device[], int *device_count, Repair repair[], int *r
     printf("请输入故障描述: ");
     fgets(repair[new_repair_index].fault_desc,
           sizeof(repair[new_repair_index].fault_desc), stdin);
+
+    int choose_status;
+    strcpy(repair[new_repair_index].status, "未知状态");
+    printf("请选择维修状态:\n(1-已维修 2-维修中 3-报废)\n");
+    printf("请选择操作: ");
+    scanf("%d", &choose_status);
+
+    if (choose_status == 1) strcpy(repair[new_repair_index].status, "已维修");
+    else if (choose_status == 2) strcpy(repair[new_repair_index].status, "维修中");
+    else if (choose_status == 3) strcpy(repair[new_repair_index].status, "报废");
+    else {
+        printf("输入错误!请重试!\n\n");
+        return;
+    }
+
+    strcpy(device[device_index].status, repair[new_repair_index].status);
 
     repair[new_repair_index].fault_desc
         [strcspn(repair[new_repair_index].fault_desc, "\n")] = '\0';
@@ -846,11 +988,13 @@ void searchRepairRecord(Device device[], int *device_count, Repair repair[], int
         }
 
         printf("\n————————————————————————————————————————————————————————————————————————————————————————\n");
-        printf("%-8s %-8s %-15s %-20s %-10s %-10s %10s\n",
-           "维修编号", "设备编号", "设备名称", "故障描述", "维修费用", "维修人员", "维修日期");
+        printf("%-8s %-8s %-15s %-20s %-10s %-10s %-10s %10s\n",
+           "维修编号", "设备编号", "设备名称", "故障描述", "维修费用", "维修人员", "维修状态", "维修日期");
         printf("————————————————————————————————————————————————————————————————————————————————————————\n");
-        printf("%-8d %-8d %-15s %-20s %-10.2lf %-10s %04d-%02d-%02d",
-           repair[index].repair_id, repair[index].device_id, getDeviceName(device, repair[index].device_id, *device_count), repair[index].fault_desc, repair[index].cost, repair[index].repair_person, repair[index].repair_date.year, repair[index].repair_date.month, repair[index].repair_date.day);
+        printf("%-8d %-8d %-15s %-20s %-10.2lf %-10s %-10s %04d-%02d-%02d"
+           , repair[index].repair_id, repair[index].device_id, getDeviceName(device, repair[index].device_id, *device_count)
+           , repair[index].fault_desc, repair[index].cost, repair[index].repair_person, repair[index].status
+           , repair[index].repair_date.year, repair[index].repair_date.month, repair[index].repair_date.day);
         printf("\n");
     }
     break;
@@ -872,11 +1016,13 @@ void searchRepairRecord(Device device[], int *device_count, Repair repair[], int
         }
 
         printf("\n——————————————————————————————————————————————————————————————————\n");
-        printf("%-8s %-8s %-15s %-20s %-10s %-10s %10s\n",
-           "维修编号", "设备编号", "设备名称", "故障描述", "维修费用", "维修人员", "维修日期");
+        printf("%-8s %-8s %-15s %-20s %-10s %-10s %-10s %10s\n",
+           "维修编号", "设备编号", "设备名称", "故障描述", "维修费用", "维修人员", "维修状态", "维修日期");
         printf("——————————————————————————————————————————————————————————————————\n");
-        printf("%-8d %-8d %-15s %-20s %-10.2lf %-10s %04d-%02d-%02d",
-           repair[index].repair_id, repair[index].device_id, getDeviceName(device, repair[index].device_id, *device_count), repair[index].fault_desc, repair[index].cost, repair[index].repair_person, repair[index].repair_date.year, repair[index].repair_date.month, repair[index].repair_date.day);
+        printf("%-8d %-8d %-15s %-20s %-10.2lf %-10s %-10s %04d-%02d-%02d"
+            , repair[index].repair_id, repair[index].device_id, getDeviceName(device, repair[index].device_id, *device_count)
+            , repair[index].fault_desc, repair[index].cost, repair[index].repair_person, repair[index].status
+            , repair[index].repair_date.year, repair[index].repair_date.month, repair[index].repair_date.day);
         printf("\n");
     }
     break;
@@ -898,8 +1044,8 @@ void searchRepairRecord(Device device[], int *device_count, Repair repair[], int
         }
 
         printf("\n——————————————————————————————————————————————————————————————————\n");
-        printf("%-8s %-8s %-15s %-20s %-10s %-10s %10s\n",
-               "维修编号", "设备编号", "设备名称", "故障描述", "维修费用", "维修人员", "维修日期");
+        printf("%-8s %-8s %-15s %-20s %-10s %-10s %-10s %10s\n",
+               "维修编号", "设备编号", "设备名称", "故障描述", "维修费用", "维修人员", "维修状态", "维修日期");
         printf("——————————————————————————————————————————————————————————————————\n");
 
         for (int i = 0; i < temp_repair_count; i++)
@@ -916,8 +1062,10 @@ void searchRepairRecord(Device device[], int *device_count, Repair repair[], int
                 }
             }
 
-            printf("%-8d %-8d %-15s %-20s %-10.2lf %-10s %04d-%02d-%02d",
-                   repair[i].repair_id, repair[i].device_id, temp_device_name, repair[i].fault_desc, repair[i].cost, repair[i].repair_person, repair[i].repair_date.year, repair[i].repair_date.month, repair[i].repair_date.day);
+            printf("%-8d %-8d %-15s %-20s %-10.2lf %-10s %-10s %04d-%02d-%02d"
+                ,repair[i].repair_id, repair[i].device_id, temp_device_name, repair[i].fault_desc
+                , repair[i].cost, repair[i].repair_person, repair[index].status
+                , repair[i].repair_date.year, repair[i].repair_date.month, repair[i].repair_date.day);
             printf("\n");
         }
         printf("\n");
@@ -927,6 +1075,7 @@ void searchRepairRecord(Device device[], int *device_count, Repair repair[], int
     default:
     {
         printf("输入错误!请重试!\n\n");
+        return;
     }
     break;
     }
@@ -935,6 +1084,86 @@ void searchRepairRecord(Device device[], int *device_count, Repair repair[], int
     {
         printf("未找到该编号的维修记录!请重试!\n\n");
         return;
+    }
+}
+
+void readRepairInfo(Repair repair[], int *repair_count, int *device_count)
+{
+    FILE *file = fopen("repair_report.csv", "r");
+
+    if (file == NULL)
+    {
+        printf("无法打开维修信息文件!\n\n");
+        printf("请确保已使用生成报表功能创建了维修信息文件!\n\n");
+        return;
+    }
+
+    if (*device_count == 0)
+    {
+        printf("请先至少添加一个设备信息!\n\n");
+        return;
+    }
+
+    char line[256];
+    int count = 0;
+
+    printf("正在读取维修信息...\n");
+    
+    // 跳过报表表头
+    fgets(line, sizeof(line), file);
+    
+    while (*repair_count < MAX_DEVICES && fgets(line, sizeof(line), file) != NULL)
+    {
+        Repair temp;
+        
+        // 去除换行符
+        line[strcspn(line, "\n")] = '\0';
+        
+        // 解析 CSV 格式
+        char *token;
+        int field = 0;
+        char *line_ptr = line;
+        
+        while ((token = strtok_r(line_ptr, ",", &line_ptr)) != NULL && field < 6)
+        {
+            // 去除字段包含的引号
+            if (token[0] == '"' && token[strlen(token) - 1] == '"')
+            {
+                token[strlen(token)-1] = '\0';
+                token++;
+            }
+            
+            switch(field)
+            {
+                case 0: temp.repair_id = atoi(token); break;
+                case 1: temp.device_id = atoi(token); break;
+                case 2: strcpy(temp.fault_desc, token); break;
+                case 3: strcpy(temp.repair_person, token); break;
+                case 4: temp.cost = atof(token); break;
+                case 5: sscanf(token, "%d-%d-%d", 
+                           &temp.repair_date.year,
+                           &temp.repair_date.month,
+                           &temp.repair_date.day);
+                        break;
+            }
+            field++;
+        }
+        
+        if (field == 6)
+        {
+            repair[*repair_count] = temp;
+            (*repair_count)++;
+            count++;
+            printf("成功读取设备: 编号 : %d\n", temp.device_id);
+        }
+    }
+    
+    fclose(file);
+    if (count == 0) {
+        printf("没有找到维修信息。\n");
+    } else {
+        printf("-------------------------------------------------------------------------------------------\n");
+        printf("总共找到 %d 个维修信息。\n", count);
     }
 }
 // 结束
@@ -989,6 +1218,7 @@ void borrowDevice(Device device[], int *device_count, Borrow borrow[], int *borr
         return;
     }
 
+    printf("当前借用设备: %s\n\n", device[device_index].name);
     borrow[new_borrow_index].record_id = *borrow_count + 1;
     borrow[new_borrow_index].device_id = device[device_index].id;
 
@@ -1021,7 +1251,6 @@ void borrowDevice(Device device[], int *device_count, Borrow borrow[], int *borr
     strcpy(borrow[new_borrow_index].status, "借用中");
 
     printf("借用成功!\n\n");
-    printf("当前借用设备: %s\n", device[device_index].name);
     printf("当前借用编号: %d\n", borrow[new_borrow_index].record_id);
 
     borrow[new_borrow_index].actual_return_date = calcuReturnDate(borrow[new_borrow_index].borrow_date);
@@ -1258,8 +1487,12 @@ void searchBorrowRecord(Device device[], int *device_count, Borrow borrow[], int
                 }
             }
 
-            printf("%-8d %-8d %-15s  %04d-%02d-%02d   %04d-%02d-%02d   %04d-%02d-%02d  %8s ",
-                   borrow[i].record_id, borrow[i].device_id, temp_device_name, borrow[i].borrow_date.year, borrow[i].borrow_date.month, borrow[i].borrow_date.day, borrow[i].return_date.year, borrow[i].return_date.month, borrow[i].return_date.day, borrow[i].actual_return_date.year, borrow[i].actual_return_date.month, borrow[i].actual_return_date.day, borrow[i].status);
+            printf("%-8d %-8d %-15s  %04d-%02d-%02d   %04d-%02d-%02d   %04d-%02d-%02d  %8s "
+                , borrow[i].record_id, borrow[i].device_id, temp_device_name
+                , borrow[i].borrow_date.year, borrow[i].borrow_date.month, borrow[i].borrow_date.day
+                , borrow[i].return_date.year, borrow[i].return_date.month, borrow[i].return_date.day
+                , borrow[i].actual_return_date.year, borrow[i].actual_return_date.month, borrow[i].actual_return_date.day
+                , borrow[i].status);
             // 添加即将逾期提醒
             int overdue_days = calculateOverdueDays(borrow[i].return_date, borrow[i].actual_return_date);
 
@@ -1287,6 +1520,7 @@ void searchBorrowRecord(Device device[], int *device_count, Borrow borrow[], int
     default:
     {
         printf("输入错误!请重试!\n\n");
+        return;
     }
     break;
     }
@@ -1298,10 +1532,343 @@ void searchBorrowRecord(Device device[], int *device_count, Borrow borrow[], int
     }
     
 }
+
+void readBorrowInfo(Borrow borrow[], int *borrow_count, int *device_count)
+{
+    FILE *file = fopen("borrow_report.csv", "r");
+
+    if (file == NULL)
+    {
+        printf("无法打开借用信息文件!\n\n");
+        printf("请确保已使用生成报表功能创建了借用信息文件!\n\n");
+        return;
+    }
+
+    if (*device_count == 0)
+    {
+        printf("请先至少添加一个设备信息!\n\n");
+        return;
+    }
+
+    char line[256];
+    int count = 0;
+
+    printf("正在读取借用信息...\n");
+    
+    fgets(line, sizeof(line), file);
+    
+    while (*borrow_count < MAX_DEVICES && fgets(line, sizeof(line), file) != NULL)
+    {
+        Borrow temp;
+        
+        // 去除换行符
+        line[strcspn(line, "\n")] = '\0';
+        
+        // 解析 CSV 格式
+        char *token;
+        int field = 0;
+        char *line_ptr = line;
+        
+        while ((token = strtok_r(line_ptr, ",", &line_ptr)) != NULL && field < 6)
+        {
+            // 去除字段可能包含的引号
+            if (token[0] == '"' && token[strlen(token) - 1] == '"')
+            {
+                token[strlen(token)-1] = '\0';
+                token++;
+            }
+            
+            switch(field)
+            {
+                case 0: temp.record_id = atoi(token); break;
+                case 1: temp.device_id = atoi(token); break;
+                case 2: strcpy(temp.status, token); break;
+                case 3: sscanf(token, "%d-%d-%d", 
+                           &temp.borrow_date.year,
+                           &temp.borrow_date.month,
+                           &temp.borrow_date.day); 
+                        break;
+                case 4: sscanf(token, "%d-%d-%d", 
+                           &temp.return_date.year,
+                           &temp.return_date.month,
+                           &temp.return_date.day); 
+                        break;
+                case 5: sscanf(token, "%d-%d-%d", 
+                           &temp.actual_return_date.year,
+                           &temp.actual_return_date.month,
+                           &temp.actual_return_date.day);
+                        break;
+            }
+            field++;
+        }
+        
+        if (field == 6)
+        {
+            borrow[*borrow_count] = temp;
+            (*borrow_count)++;
+            count++;
+            printf("成功读取设备: 编号 : %d\n", temp.device_id);
+        }
+    }
+    
+    fclose(file);
+    if (count == 0) {
+        printf("没有找到借用信息。\n");
+    } else {
+        printf("-------------------------------------------------------------------------------------------\n");
+        printf("总共找到 %d 个借用信息。\n", count);
+    }
+}
 // 结束
 
 // 统计报表模块
-void deviceCategoryStats(Device device[], int device_count)
+void deviceCategoryStats(Device device[], int *device_count)
 {
-    
+    if (*device_count == 0)
+    {
+        printf("请先至少添加一个设备信息!\n\n");
+        return;
+    }
+
+    char unique_types[MAX_DEVICES][30];     // 存储唯一的设备类型
+    int type_counts[MAX_DEVICES] = {0};     // 存储每种类型的数量
+    int unique_count = 0;                   // 不同设备类型的数量
+
+    for (int i = 0; i < *device_count; i++)
+    {
+        int found = FALSE;
+        for (int j = 0; j < unique_count; j++)
+        {
+            // 如果找到已有的类型, 让对应类型的数量加1
+            if (strcmp(unique_types[j], device[i].type) == 0)
+            {
+                type_counts[j]++;
+                found = TRUE;
+                break; // 找到匹配的加完数量就退出
+            }
+        }
+
+        // 新类型处理
+        if (!found)
+        {
+            strcpy(unique_types[unique_count], device[i].type);
+            type_counts[unique_count] = 1;  // 新类型数量默认为1
+            unique_count++;                 // 增加类型数量
+        }
+    }
+
+    printf("\n设备分类统计结果: \n");
+    printf("————————————————————————————————————————————\n");
+    printf("%-20s %-10s %10s\n", "设备类型", "数量", "百分比");
+    printf("————————————————————————————————————————————\n");
+    for (int i = 0; i < unique_count; i++)
+    {
+        double percentage = (double)type_counts[i] / *device_count * 100;
+        printf("%-20s %-10d %9.2lf%%\n"
+            , unique_types[i], type_counts[i], percentage);
+    }
+    printf("————————————————————————————————————————————\n");
+    printf("设备总数: %d\n\n", *device_count);
+}
+
+void deviceStatusStats(Device device[], int *device_count)
+{
+    if (*device_count == 0)
+    {
+        printf("请先至少添加一个设备信息!\n\n");
+        return;
+    }
+
+    char unique_status[MAX_DEVICES][30];     // 存储唯一的设备状态
+    int status_counts[MAX_DEVICES] = {0};     // 存储每种状态的数量
+    int unique_count = 0;                   // 唯一状态的数量
+
+    for (int i = 0; i < *device_count; i++)
+    {
+        int found = FALSE;
+        for (int j = 0; j < unique_count; j++)
+        {
+            if (strcmp(unique_status[j], device[i].status) == 0)
+            {
+                status_counts[j]++;
+                found = TRUE;
+                break;
+            }
+        }
+
+        if (!found)
+        {
+            strcpy(unique_status[unique_count], device[i].status);
+            status_counts[unique_count] = 1;
+            unique_count++;
+        }
+    }
+
+    printf("\n设备状态分类统计结果: \n");
+    printf("————————————————————————————————————————————\n");
+    printf("%-20s %-10s %10s\n", "设备状态", "数量", "百分比");
+    printf("————————————————————————————————————————————\n");
+    for (int i = 0; i < unique_count; i++)
+    {
+        double percentage = (double)status_counts[i] / *device_count * 100;
+        printf("%-20s %-10d %9.2lf%%\n"
+            , unique_status[i], status_counts[i], percentage);
+    }
+    printf("————————————————————————————————————————————\n");
+    printf("设备总数: %d\n\n", *device_count);
+}
+
+void deviceBorrowStats(Borrow borrow[], int *borrow_count, Device *device, int *device_count)
+{
+    if (*device_count == 0)
+    {
+        printf("请先至少添加一个设备信息!\n\n");
+        return;
+    }
+
+    if (*borrow_count == 0)
+    {
+        printf("请先至少添加一个借用信息!\n");
+        return;
+    }
+
+    char borrow_unique_status[MAX_DEVICES][30];     // 存储唯一的设备类型
+    int borrow_type_counts[MAX_DEVICES] = {0};     // 存储每种类型的数量
+    int borrow_unique_count = 0;                   // 唯一类型的数量
+
+    for (int q = 0; q < *device_count; q++)
+    {
+        int found = FALSE;
+        for (int m = 0; m < borrow_unique_count; m++)
+        {
+            if (strcmp(borrow_unique_status[m], borrow[q].status) == 0)
+            {
+                borrow_type_counts[m]++;
+                found = TRUE;
+                break;
+            }
+        }
+
+        if (!found)
+        {
+            strcpy(borrow_unique_status[borrow_unique_count], borrow[q].status);
+            borrow_type_counts[borrow_unique_count] = 1;
+            borrow_unique_count++;
+        }
+    }
+
+    printf("\n设备借用统计结果: \n");
+    printf("————————————————————————————————————————————\n");
+    printf("%-20s %-10s %10s\n", "借用类型", "数量", "百分比");
+    printf("————————————————————————————————————————————\n");
+    for (int q = 0; q< borrow_unique_count; q++)
+    {
+        double percentage1 = (double)borrow_type_counts[q] / *borrow_count * 100;
+        printf("%-20s %-10d %9.2lf%%\n"
+            , borrow_unique_status[q], borrow_type_counts[q], percentage1);
+    }
+    printf("————————————————————————————————————————————\n");
+    printf("借用设备总数: %d\n", *borrow_count);
+}
+
+void generateReport(Device device[], int *device_count, Repair repair[], int *repair_count,
+                    Borrow borrow[], int *borrow_count)
+{
+    if (*device_count == 0)
+    {
+        printf("没有设备信息可导出！\n\n");
+        return;
+    }
+
+    int choice;
+
+    do
+    {
+        showGenerateReportMenu();
+        scanf("%d", &choice);
+        cleanBuffer();
+
+        switch (choice)
+        {
+        case 1:
+        {
+            FILE *file = fopen("device_report.csv", "w");
+            if (file == NULL)
+            {
+                printf("无法创建报表文件!\n\n");
+                return;
+            }
+            fprintf(file, "设备编号,设备名称,设备类型,设备品牌,设备型号,设备价格,设备状态,购买日期\n");
+
+            for (int i = 0; i < *device_count; i++)
+            {
+                fprintf(file, "%d,\"%s\",\"%s\",\"%s\",\"%s\",%.2lf,\"%s\",%04d-%02d-%02d\n"
+                    , device[i].id, device[i].name, device[i].type, device[i].brand
+                    , device[i].model, device[i].price, device[i].status
+                    , device[i].purchase_date.year, device[i].purchase_date.month, device[i].purchase_date.day);
+            }
+
+            fclose(file);
+            printf("设备信息报表已成功导出到 device_report.csv 文件中!\n\n");
+        }
+        break;
+
+        case 2:
+        {
+            FILE *file = fopen("repair_report.csv", "w");
+            if (file == NULL)
+            {
+                printf("无法创建报表文件!\n\n");
+                return;
+            }
+            fprintf(file, "维修编号,设备编号,故障描述,维修人员,维修费用,维修状态,维修日期\n");
+
+            for (int i = 0; i < *repair_count; i++)
+            {
+                fprintf(file, "%d,%d,\"%s\",\"%s\",%.2lf,\"%s\",%04d-%02d-%02d\n"
+                    , repair[i].repair_id, repair[i].device_id, repair[i].fault_desc
+                    , repair[i].repair_person, repair[i].cost, repair[i].status
+                    , repair[i].repair_date.year, repair[i].repair_date.month, repair[i].repair_date.day);
+            }
+
+            fclose(file);
+            printf("设备信息报表已成功导出到 repair_report.csv 文件中!\n\n");
+        }
+        break;
+
+        case 3:
+        {
+            FILE *file = fopen("borrow_report.csv", "w");
+            if (file == NULL)
+            {
+                printf("无法创建报表文件!\n\n");
+                return;
+            }
+            fprintf(file, "借用编号,设备编号,借用状态,借用日期,归还日期,实际归还日期\n");
+
+            for (int i = 0; i < *borrow_count; i++)
+            {
+                fprintf(file, "%d,%d,\"%s\",%04d-%02d-%02d,%04d-%02d-%02d,%04d-%02d-%02d\n"
+                    , borrow[i].record_id, borrow[i].device_id, borrow[i].status
+                    , borrow[i].borrow_date.year, borrow[i].borrow_date.month, borrow[i].borrow_date.day
+                    , borrow[i].return_date.year, borrow[i].return_date.month, borrow[i].return_date.day
+                    , borrow[i].actual_return_date.year, borrow[i].actual_return_date.month, borrow[i].actual_return_date.day);
+            }
+
+            fclose(file);
+            printf("设备信息报表已成功导出到 borrow_report.csv 文件中!\n\n");
+        }
+        break;
+
+        case 0:
+        break;
+
+        default:
+        {
+            printf("输入错误，请重试!\n\n");
+        }
+        break;
+        }
+        
+    }while (choice != 0);
 }

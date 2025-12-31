@@ -42,7 +42,7 @@ int confirmEdit(void)
         scanf("%d",&comfirm);
         cleanBuffer();
 
-        if(comfirm == 1)  ;
+        if(comfirm == 1);
         else if(comfirm == 0)
         {
             comfirm = 1;
@@ -86,6 +86,90 @@ int confirmDelete(void)
     } while (! comfirm);   
     
     return TRUE;
+}
+
+int confirmReadInfo(void)
+{
+    int confirm;
+    do
+    {
+        printf("┌───────────────┐\n");    
+	    printf("|  是否确认读取 |\n");
+	    printf("├───────┬───────┤\n");
+	    printf("| 1- 是 │ 0- 否 |\n");
+	    printf("└───────┴───────┘\n");
+        printf("请输入: ");
+        scanf("%d",&confirm);
+        cleanBuffer();
+
+        if(confirm == 1);
+        else if(confirm == 0)
+        {
+            confirm = 1;
+            return FALSE;
+        }
+        else 
+        {
+            printf("输入无效，请重新输入!\n");
+            confirm = 0;
+        }
+    }while (!confirm);
+
+    return TRUE;
+}
+
+int confirmBatchAdd(void)
+{
+    int comfirm, batch_add_count;
+    do
+    {
+        printf("┌────────────────┐\n");    
+        printf("|是否确认批量添加|\n");
+        printf("├───────┬────────┤\n");
+        printf("| 1- 是 │ 0- 否  |\n");
+        printf("└───────┴────────┘\n");
+        printf("请输入: ");
+        scanf("%d",&comfirm);
+        
+        if(comfirm == 1)  
+        {
+            do
+            {
+                printf("批量输入的设备数量：");
+                scanf("%d",&batch_add_count);
+                
+                if(batch_add_count == 1)
+                {
+                    printf("建议输入大于1的整数! \n\n");
+                    comfirm = 0;
+                }
+
+                else if(batch_add_count == 0)   comfirm = 1;
+                
+                else if(batch_add_count < 0)
+                {
+                    printf("请输入大于0的整数! \n\n");
+                    comfirm = 0;
+                }
+
+                else comfirm = 1;
+            } while (! comfirm);
+        }
+        
+        else if(comfirm == 0)
+        {
+            comfirm = 1;
+            batch_add_count = 1;
+        }
+        
+        else 
+        {
+            printf("输入无效，请重新输入！\n\n");
+            comfirm = 0;
+        }
+    } while (! comfirm); 
+    
+    return(batch_add_count);
 }
 
 // 闰年检查
@@ -164,7 +248,7 @@ int isDateValid(Date date)
     // 检查日期是否超过当月最大天数
     if (date.day > days_in_month[date.month - 1]) 
     {
-        printf("天数输入错误,请重试!\n\n");
+        printf("天数输入错误,请重试!\n");
         return FALSE;
     }
 

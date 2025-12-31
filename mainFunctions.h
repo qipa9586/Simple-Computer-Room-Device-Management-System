@@ -3,23 +3,32 @@
 
 #include "data.h"
 
-/* è®¾å¤‡ä¿¡æ¯ç®¡ç†å‡½æ•°å£°æ˜ */
-void addNewDevice(Device device[], int *device_count);
-void editDeviceInfo(Device device[], int *device_count);
-void deleteDeviceInfo(Device device[], int *device_count);
-void searchDeviceInfo(Device device[], int *device_count);
-void displayAllDeviceInfo(Device device[], int *device_count);
+/* Éè±¸ĞÅÏ¢¹ÜÀíº¯ÊıÉùÃ÷ */
+void addNewDevice(Device device[], int *device_count);              // Ìí¼ÓÉè±¸ĞÅÏ¢
+void editDeviceInfo(Device device[], int *device_count);            // ±à¼­Éè±¸ĞÅÏ¢
+void deleteDeviceInfo(Device device[], int *device_count);          // É¾³ıÉè±¸ĞÅÏ¢
+void searchDeviceInfo(Device device[], int *device_count);          // ²éÑ¯Éè±¸ĞÅÏ¢
+void displayAllDeviceInfo(Device device[], int *device_count);      // ÏÔÊ¾ËùÓĞÉè±¸ĞÅÏ¢
+void readDeviceInfo(Device device[], int *device_count);            // ¶ÁÈ¡Éè±¸ĞÅÏ¢
 
-
-/* è®¾å¤‡çŠ¶æ€ç®¡ç†å‡½æ•°å£°æ˜ */
+/* Éè±¸×´Ì¬¹ÜÀíº¯ÊıÉùÃ÷ */
 void updateStatus(Device device[], int *device_count);
 void addRepairRecord(Device device[], int *device_count, Repair repair[], int *repair_count);
 void searchRepairRecord(Device device[], int *device_count, Repair repair[], int *repair_count);
+void readRepairInfo(Repair repair[], int *repair_count, int *device_count);
 
-/* è®¾å¤‡å€Ÿç”¨ç®¡ç†å‡½æ•°å£°æ˜ */
+/* Éè±¸½èÓÃ¹ÜÀíº¯ÊıÉùÃ÷ */
 void borrowDevice(Device device[], int *device_count, Borrow borrow[], int *borrow_count);
 void returnDevice(Device device[], int *device_count, Borrow borrow[], int *borrow_count);
 void searchBorrowRecord(Device device[], int *device_count, Borrow borrow[], int *borrow_count);
+void readBorrowInfo(Borrow borrow[], int *borrow_count, int *device_count);
+
+/* Í³¼Æ±¨±íÄ£¿éº¯ÊıÉùÃ÷ */
+void deviceCategoryStats(Device device[], int *device_count);
+void deviceStatusStats(Device device[], int *device_count);
+void deviceBorrowStats(Borrow borrow[], int *borrow_count, Device *device, int *device_count);
+void generateReport(Device device[], int *device_count, Repair repair[], int *repair_count,
+                    Borrow borrow[], int *borrow_count);
 
 
 #endif
