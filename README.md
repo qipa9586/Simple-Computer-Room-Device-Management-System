@@ -1,4 +1,4 @@
-# 计算机机房设备管理系统设计方案
+# 计算机机房设备管理系统设计方案 (C语言期末课程设计)
 
 ## 一、项目概述
 
@@ -111,10 +111,9 @@ typedef struct
 
 ### 3.3 文件存储设计
 系统采用文件方式存储数据，设计以下数据文件：
-1. `device.dat` - 设备信息数据文件
-2. `borrow.dat` - 借用记录数据文件
-3. `repair.dat` - 维修记录数据文件
-4. `user.dat` - 用户信息数据文件
+1. `device_report.csv` - 设备信息数据文件
+2. `borrow_report.csv` - 借用记录数据文件
+3. `repair_report.csv` - 维修记录数据文件
 
 ## 四、详细功能设计
 
@@ -245,28 +244,28 @@ void generateReport();
 ### 6.2 主要函数调用关系
 ```
 main()
-├── showMainMenu()      // 显示主菜单
-│   ├── deviceManagement()  // 设备信息管理
-│   │   ├── addNewDevice()
-│   │   ├── editEquipment()
-│   │   ├── deleteDeviceInfo()
-│   │   ├── searchDeviceInfo()
-│   │   └── displayAllDeviceInfo()
-│   ├── statusManagement()     // 设备状态管理
-│   │   ├── updateStatus()
-│   │   ├── addRepairRecord()
-│   │   └── searchRepairRecord()
-│   ├── borrowManagement()     // 设备借用管理
-│   │   ├── borrowDevice()
-│   │   ├── returnDevice()
-│   │   ├── overdueReminder()
-│   │   └── searchBorrowRecord()
-│   └── reportManagement()     // 统计报表
-│       ├── deviceCategoryStats()
-│       ├── deviceStatusStats()
-│       ├── deviceBorrowStats()
-│       └── generateReport()
-└── saveData()          // 数据保存
+└── showMainMenu()      // 显示主菜单
+    ├── deviceManagement()  // 设备信息管理
+    │   ├── addNewDevice()
+    │   ├── editEquipment()
+    │   ├── deleteDeviceInfo()
+    │   ├── searchDeviceInfo()
+    │   └── displayAllDeviceInfo()
+    ├── statusManagement()     // 设备状态管理
+    │   ├── updateStatus()
+    │   ├── addRepairRecord()
+    │   └── searchRepairRecord()
+    ├── borrowManagement()     // 设备借用管理
+    │   ├── borrowDevice()
+    │   ├── returnDevice()
+    │   ├── overdueReminder()
+    │   └── searchBorrowRecord()
+    └── reportManagement()     // 统计报表
+        ├── deviceCategoryStats()
+        ├── deviceStatusStats()
+        ├── deviceBorrowStats()
+        └── generateReport()
+            └── saveData()       // 数据保存至报表文件中
 ```
 
 ## 七、测试方案
@@ -289,7 +288,6 @@ main()
 ### 7.4 测试用例设计
 1. 正常功能测试用例
 2. 异常情况测试用例
-3. 压力测试用例
 
 ## 八、使用说明
 
@@ -300,8 +298,7 @@ main()
 
 ### 8.2 系统启动
 1. 运行生成的可执行文件
-2. 输入用户名和密码登录系统
-3. 根据菜单提示进行操作
+2. 根据菜单提示进行操作
 
 ### 8.3 注意事项
 1. 定期备份数据文件
@@ -336,6 +333,6 @@ main()
 本设计方案详细描述了计算机机房设备管理系统的功能需求、系统设计、代码结构和实现方案。系统采用模块化设计，结构清晰，功能完善，能够满足机房设备管理的基本需求。通过本系统的实施，可以大大提高机房设备管理的效率和准确性，为学校信息化建设提供有力支持。
 
 ---
-**设计者：** C语言课程设计第1小组 [张昊民 黄泓洋 黄昱铭] 
-**日期：** 2025年12月29日  
-**版本：** 1.1
+**设计者：** C语言课程设计第1小组 [张昊民 黄昱铭 黄泓洋] 
+**日期：** 2026年1月1日  
+**版本：** 1.0.0
