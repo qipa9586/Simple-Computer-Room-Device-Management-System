@@ -235,10 +235,9 @@ void generateReport();
 ├── menu.c              // 菜单显示函数
 ├── assistFunctions.h   // 辅助函数声明头文件
 ├── assistFunctions.c   // 辅助函数实现文件
-├── equipment.dat       // 设备数据文件
-├── borrow.dat          // 借用记录文件
-├── repair.dat          // 维修记录文件
-└── user.dat            // 用户数据文件
+├── device_report.csv   // 设备数据文件
+├── borrow_report.csv   // 借用记录文件
+└── repair_report.csv   // 维修记录文件
 ```
 
 ### 6.2 主要函数调用关系
