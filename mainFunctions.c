@@ -820,7 +820,8 @@ void updateStatus(Device device[], int *device_count)
 
     printf("该设备为: %s\n", device[index].name);
     printf("当前状态: %s\n\n", device[index].status);
-    printf("请输入要更新的状态\n(1-正常 2-故障 3-停用 4-已维修 5-维修中 6-报废): ");
+    printf("请输入要更新的状态:\n(1-正常 2-故障 3-停用)\n");
+    printf("请选择操作: ");
     scanf("%d", &choice);
     cleanBuffer();
 
@@ -830,12 +831,6 @@ void updateStatus(Device device[], int *device_count)
         strcpy(device[index].status, "故障");
     else if (choice == 3)
         strcpy(device[index].status, "停用");
-    else if (choice == 4)
-        strcpy(device[index].status, "已维修");
-    else if (choice == 5)
-        strcpy(device[index].status, "维修中");
-    else if (choice == 6)
-        strcpy(device[index].status, "报废");
     else
     {
         printf("输入错误!请重试!\n\n");
