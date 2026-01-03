@@ -308,7 +308,7 @@ int main(void)
         case 0:
         {
             system("cls");
-            printf("感谢使用本程序!\n\n制作: 第1小组\n\n");
+            printf("感谢使用本程序!\n制作: 第1小组\n\n");
         }
         break;
 
