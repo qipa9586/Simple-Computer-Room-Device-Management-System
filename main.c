@@ -88,7 +88,7 @@ int main(void)
                     }
                     if (!confirm)
                     {
-                        printf("ÒÑÈ¡Ïû¶ÁÈ¡!\n\n");
+                        printf("å·²å–æ¶ˆè¯»å–!\n\n");
                         system("pause");
                     }
                 }
@@ -101,7 +101,7 @@ int main(void)
 
                 default:
                 {
-                    printf("ÊäÈë´íÎó!ÇëÖØÊÔ!\n\n");
+                    printf("è¾“å…¥é”™è¯¯!è¯·é‡è¯•!\n\n");
                 }
                 break;
                 }
@@ -157,7 +157,7 @@ int main(void)
                     }
                     if (!confirm)
                     {
-                        printf("ÒÑÈ¡Ïû¶ÁÈ¡!\n\n");
+                        printf("å·²å–æ¶ˆè¯»å–!\n\n");
                         system("pause");
                     }
                 }
@@ -168,7 +168,7 @@ int main(void)
 
                 default:
                 {
-                    printf("ÊäÈë´íÎó!ÇëÖØÊÔ!\n\n");
+                    printf("è¾“å…¥é”™è¯¯!è¯·é‡è¯•!\n\n");
                 }
                 break;
                 }
@@ -223,7 +223,7 @@ int main(void)
                     }
                     if (!confirm)
                     {
-                        printf("ÒÑÈ¡Ïû¶ÁÈ¡!\n\n");
+                        printf("å·²å–æ¶ˆè¯»å–!\n\n");
                         system("pause");
                     }
                 }
@@ -234,7 +234,7 @@ int main(void)
 
                 default:
                 {
-                    printf("ÊäÈë´íÎó!ÇëÖØÊÔ!\n\n");
+                    printf("è¾“å…¥é”™è¯¯!è¯·é‡è¯•!\n\n");
                 }
                 break;
                 }
@@ -297,7 +297,7 @@ int main(void)
 
                 default:
                 {
-                    printf("ÊäÈë´íÎó!ÇëÖØÊÔ!\n\n");
+                    printf("è¾“å…¥é”™è¯¯!è¯·é‡è¯•!\n\n");
                 }
                 break;
                 }
@@ -308,14 +308,14 @@ int main(void)
         case 0:
         {
             system("cls");
-            printf("¸ĞĞ»Ê¹ÓÃ±¾³ÌĞò!\n\nÖÆ×÷: µÚ1Ğ¡×é\n³ÉÔ±: ÕÅê»Ãñ »ÆêÅÃú »ÆãüÑó\n\n");
+            printf("æ„Ÿè°¢ä½¿ç”¨æœ¬ç¨‹åº!\n\nåˆ¶ä½œ: ç¬¬1å°ç»„\n\n");
         }
         break;
 
         default:
         {
             system("cls");
-            printf("ÊäÈë´íÎó£¬ÇëÖØÊÔ!\n\n");
+            printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡è¯•!\n\n");
         }
         break;
         }
