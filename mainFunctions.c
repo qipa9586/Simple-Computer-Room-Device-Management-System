@@ -940,8 +940,6 @@ void addRepairRecord(Device device[], int *device_count, Repair repair[], int *r
 
     printf("维修信息添加成功!\n\n");
 
-    
-
     (*repair_count)++;
 }
 
@@ -1059,7 +1057,7 @@ void searchRepairRecord(Device device[], int *device_count, Repair repair[], int
 
             printf("%-8d %-8d %-15s %-20s %-10.2lf %-10s %-10s %04d-%02d-%02d"
                 ,repair[i].repair_id, repair[i].device_id, temp_device_name, repair[i].fault_desc
-                , repair[i].cost, repair[i].repair_person, repair[index].status
+                , repair[i].cost, repair[i].repair_person, repair[i].status
                 , repair[i].repair_date.year, repair[i].repair_date.month, repair[i].repair_date.day);
             printf("\n");
         }
@@ -1082,7 +1080,7 @@ void searchRepairRecord(Device device[], int *device_count, Repair repair[], int
     }
 }
 
-void readRepairInfo(Repair repair[], int *repair_count, int *device_count)
+void readRepairInfo(Repair repair[], int *repair_count, Device device[], int *device_count)
 {
     FILE *file = fopen("repair_report.csv", "r");
 
@@ -1119,7 +1117,7 @@ void readRepairInfo(Repair repair[], int *repair_count, int *device_count)
         int field = 0;
         char *line_ptr = line;
         
-        while ((token = strtok_r(line_ptr, ",", &line_ptr)) != NULL && field < 6)
+        while ((token = strtok_r(line_ptr, ",", &line_ptr)) != NULL && field < 7)
         {
             // 去除字段包含的引号
             if (token[0] == '"' && token[strlen(token) - 1] == '"')
@@ -1135,7 +1133,8 @@ void readRepairInfo(Repair repair[], int *repair_count, int *device_count)
                 case 2: strcpy(temp.fault_desc, token); break;
                 case 3: strcpy(temp.repair_person, token); break;
                 case 4: temp.cost = atof(token); break;
-                case 5: sscanf(token, "%d-%d-%d", 
+                case 5: strcpy(temp.status, token); break;
+                case 6: sscanf(token, "%d-%d-%d", 
                            &temp.repair_date.year,
                            &temp.repair_date.month,
                            &temp.repair_date.day);
@@ -1144,10 +1143,21 @@ void readRepairInfo(Repair repair[], int *repair_count, int *device_count)
             field++;
         }
         
-        if (field == 6)
+        if (field == 7)
         {
             repair[*repair_count] = temp;
             (*repair_count)++;
+            for (int i = 0; i < *device_count; i++)
+            {
+                for (int j = 0; j < *repair_count; j++)
+                {
+                    if (device[i].id == repair[j].device_id)
+                    {
+                        strcpy(device[i].status, repair[j].status);
+                        break;
+                    }
+                } 
+            }
             count++;
             printf("成功读取设备: 编号 : %d\n", temp.device_id);
         }
@@ -1389,11 +1399,13 @@ void searchBorrowRecord(Device device[], int *device_count, Borrow borrow[], int
         int overdue_days = calculateOverdueDays(borrow[index].return_date, borrow[index].actual_return_date);
         if (strcmp(borrow[index].status, "已归还") == 0) {
                 printf("%15s", "\\");
+                printf("\n");
         }
         if (strcmp(borrow[index].status, "已归还") != 0)
         {
             if (overdue_days > 0) {
                 printf("%15s", "\\");
+                printf("\n");
             }
             else if(overdue_days > 0) {
                 printf("您已逾期 %d 天", overdue_days);
@@ -1432,11 +1444,13 @@ void searchBorrowRecord(Device device[], int *device_count, Borrow borrow[], int
         int overdue_days = calculateOverdueDays(borrow[index].return_date, borrow[index].actual_return_date);
         if (strcmp(borrow[index].status, "已归还") == 0) {
                 printf("%15s", "\\");
+                printf("\n");
         }
         if (strcmp(borrow[index].status, "已归还") != 0)
         {
             if (overdue_days > 0) {
                 printf("%15s", "\\");
+                printf("\n");
             }
             else if(overdue_days > 0) {
                 printf("您已逾期 %d 天", overdue_days);
@@ -1493,11 +1507,13 @@ void searchBorrowRecord(Device device[], int *device_count, Borrow borrow[], int
 
             if (strcmp(borrow[i].status, "已归还") == 0) {
                 printf("%15s", "\\");
+                printf("\n");
             }
             if (strcmp(borrow[i].status, "已归还") != 0)
             {
                 if (overdue_days > 0) {
                     printf("%15s", "\\");
+                    printf("\n");
                 }
                 else if(overdue_days > 0) {
                     printf("您已逾期 %d 天", overdue_days);
@@ -1528,7 +1544,7 @@ void searchBorrowRecord(Device device[], int *device_count, Borrow borrow[], int
     
 }
 
-void readBorrowInfo(Borrow borrow[], int *borrow_count, int *device_count)
+void readBorrowInfo(Borrow borrow[], int *borrow_count, Device device[], int *device_count)
 {
     FILE *file = fopen("borrow_report.csv", "r");
 
@@ -1601,6 +1617,22 @@ void readBorrowInfo(Borrow borrow[], int *borrow_count, int *device_count)
         {
             borrow[*borrow_count] = temp;
             (*borrow_count)++;
+            for (int i = 0; i < *device_count; i++)
+            {
+                for (int j = 0; j < *borrow_count; j++)
+                {
+                    if (device[i].id == borrow[j].device_id)
+                    {
+                        strcpy(device[i].status, borrow[j].status);
+                        if (!strcmp(device[i].status, "已归还"))
+                        {
+                            strcpy(device[i].status, "正常");
+                            break;
+                        }
+                        break;
+                    }
+                } 
+            }
             count++;
             printf("成功读取设备: 编号 : %d\n", temp.device_id);
         }

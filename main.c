@@ -152,7 +152,7 @@ int main(void)
                     int confirm = confirmReadInfo();
                     if (confirm)
                     {
-                    readRepairInfo(repair, &repair_count, &device_count);
+                    readRepairInfo(repair, &repair_count, device, &device_count);
                     system("pause");
                     }
                     if (!confirm)
@@ -218,7 +218,7 @@ int main(void)
                     int confirm = confirmReadInfo();
                     if (confirm)
                     {
-                    readBorrowInfo(borrow, &borrow_count, &device_count);
+                    readBorrowInfo(borrow, &borrow_count, device, &device_count);
                     system("pause");
                     }
                     if (!confirm)

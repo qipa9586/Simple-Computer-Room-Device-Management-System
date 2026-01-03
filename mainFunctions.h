@@ -15,13 +15,13 @@ void readDeviceInfo(Device device[], int *device_count);            // ¶ÁÈ¡Éè±¸Ð
 void updateStatus(Device device[], int *device_count);
 void addRepairRecord(Device device[], int *device_count, Repair repair[], int *repair_count);
 void searchRepairRecord(Device device[], int *device_count, Repair repair[], int *repair_count);
-void readRepairInfo(Repair repair[], int *repair_count, int *device_count);
+void readRepairInfo(Repair repair[], int *repair_count, Device device[], int *device_count);
 
 /* Éè±¸½èÓÃ¹ÜÀíº¯ÊýÉùÃ÷ */
 void borrowDevice(Device device[], int *device_count, Borrow borrow[], int *borrow_count);
 void returnDevice(Device device[], int *device_count, Borrow borrow[], int *borrow_count);
 void searchBorrowRecord(Device device[], int *device_count, Borrow borrow[], int *borrow_count);
-void readBorrowInfo(Borrow borrow[], int *borrow_count, int *device_count);
+void readBorrowInfo(Borrow borrow[], int *borrow_count, Device device[], int *device_count);
 
 /* Í³¼Æ±¨±íÄ£¿éº¯ÊýÉùÃ÷ */
 void deviceCategoryStats(Device device[], int *device_count);
