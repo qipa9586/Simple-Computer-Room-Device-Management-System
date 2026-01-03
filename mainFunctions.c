@@ -1745,7 +1745,7 @@ void deviceStatusStats(Device device[], int *device_count)
     printf("譜姥悳方: %d\n\n", *device_count);
 }
 
-void deviceBorrowStats(Borrow borrow[], int *borrow_count, Device *device, int *device_count)
+void deviceBorrowStats(Borrow borrow[], int *borrow_count, Device device[], int *device_count)
 {
     if (*device_count == 0)
     {
@@ -1763,14 +1763,14 @@ void deviceBorrowStats(Borrow borrow[], int *borrow_count, Device *device, int *
     int borrow_type_counts[MAX_DEVICES] = {0};     // 贋刈耽嶽窃侏議方楚
     int borrow_unique_count = 0;                   // 率匯窃侏議方楚
 
-    for (int q = 0; q < *device_count; q++)
+    for (int i = 0; i < *borrow_count; i++)
     {
         int found = FALSE;
-        for (int m = 0; m < borrow_unique_count; m++)
+        for (int j = 0; j < borrow_unique_count; j++)
         {
-            if (strcmp(borrow_unique_status[m], borrow[q].status) == 0)
+            if (strcmp(borrow_unique_status[j], borrow[i].status) == 0)
             {
-                borrow_type_counts[m]++;
+                borrow_type_counts[j]++;
                 found = TRUE;
                 break;
             }
@@ -1778,7 +1778,7 @@ void deviceBorrowStats(Borrow borrow[], int *borrow_count, Device *device, int *
 
         if (!found)
         {
-            strcpy(borrow_unique_status[borrow_unique_count], borrow[q].status);
+            strcpy(borrow_unique_status[borrow_unique_count], borrow[i].status);
             borrow_type_counts[borrow_unique_count] = 1;
             borrow_unique_count++;
         }
@@ -1786,13 +1786,13 @@ void deviceBorrowStats(Borrow borrow[], int *borrow_count, Device *device, int *
 
     printf("\n譜姥処喘由柴潤惚: \n");
     printf("！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！\n");
-    printf("%-20s %-10s %10s\n", "処喘窃侏", "方楚", "為蛍曳");
+    printf("%-20s %-10s %10s\n", "処喘彜蓑", "方楚", "為蛍曳");
     printf("！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！\n");
-    for (int q = 0; q< borrow_unique_count; q++)
+    for (int i = 0; i < borrow_unique_count; i++)
     {
-        double percentage1 = (double)borrow_type_counts[q] / *borrow_count * 100;
+        double percentage1 = (double)borrow_type_counts[i] / *borrow_count * 100;
         printf("%-20s %-10d %9.2lf%%\n"
-            , borrow_unique_status[q], borrow_type_counts[q], percentage1);
+            , borrow_unique_status[i], borrow_type_counts[i], percentage1);
     }
     printf("！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！\n");
     printf("処喘譜姥悳方: %d\n", *borrow_count);

@@ -26,7 +26,7 @@ void readBorrowInfo(Borrow borrow[], int *borrow_count, Device device[], int *de
 /* 统计报表模块函数声明 */
 void deviceCategoryStats(Device device[], int *device_count);
 void deviceStatusStats(Device device[], int *device_count);
-void deviceBorrowStats(Borrow borrow[], int *borrow_count, Device *device, int *device_count);
+void deviceBorrowStats(Borrow borrow[], int *borrow_count, Device device[], int *device_count);
 void generateReport(Device device[], int *device_count, Repair repair[], int *repair_count,
                     Borrow borrow[], int *borrow_count);
 
